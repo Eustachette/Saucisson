@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -48,11 +49,7 @@ public class JpaintInterface extends JFrame
 	
 	JMenuItem colorPinceauMenu = new JMenuItem("Couleur");
 	JMenuItem taillePinceauMenu = new JMenuItem("Taille du crayon");
-	
-	JMenuItem aboutMenu = new JMenuItem("A propos",new ImageIcon("images/loupe" +
-            ".png"));
-	
-	JToolBar toolBar = new JToolBar();
+
 	
 	JLabel message = new JLabel("Dessins en cours");
 	JPanel statusBar = new JPanel();
@@ -145,7 +142,12 @@ public class JpaintInterface extends JFrame
 
                 if(option == JOptionPane.OK_OPTION)
                 {
-                    
+                    try {
+                        zoneDessin.savePaint();
+                        zoneDessin.clear();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 if(option == JOptionPane.NO_OPTION)
                 {
@@ -171,6 +173,17 @@ public class JpaintInterface extends JFrame
 				}				
 			}
 		});
+
+		savePaint.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    zoneDessin.savePaint();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
 		
 		newPaint.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
 		quit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK));
