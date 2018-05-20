@@ -4,20 +4,18 @@
 
 package com.jpaint.dessins;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
-import fenetre.JpaintInterface;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import javax.swing.*;
 
 public class ZoneDessin extends JPanel 
 {
@@ -83,9 +81,16 @@ public class ZoneDessin extends JPanel
 		});
 	}
 	
-	public void savePaint()
-	{
-		
+	public void savePaint() throws IOException {
+
+        String name = JOptionPane.showInputDialog(null, "Veuillez donner un nom à votre oeuvre : ", "Titre du dessin", JOptionPane.QUESTION_MESSAGE);
+        BufferedImage bufferedImage = new BufferedImage(this.getWidth(),this.getHeight(),BufferedImage.TYPE_BYTE_INDEXED);
+        this.paintComponent(bufferedImage.getGraphics());
+
+        RenderedImage rendImage = bufferedImage;
+
+        ImageIO.write(rendImage, "jpg", new File("draw/"+name+".png"));
+        
 	}
 
 	public void drawFormeCarre(int typeForme)
@@ -360,4 +365,8 @@ public class ZoneDessin extends JPanel
 		this.bgChanging = bgChanging;
 	}
 
+	public ArrayList<JPoint> getmEnsembleJPoint()
+    {
+        return this.mEnsembleJPoint;
+    }
 }
